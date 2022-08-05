@@ -38,6 +38,12 @@ class Vehicle:
         self.distance_measurement_units = distance_measurement_units
 
     def get_vehicle(self):
+        """
+        Returns an object containing the main characteristics of an object of this class.
+
+        :return:
+        :rtype: object
+        """
         vehicle_characteristics = {
             'driving_force': self.driving_force,
             'average_speed': f'{self.average_speed} {self.speed_measurement_units}',
@@ -48,6 +54,13 @@ class Vehicle:
         return vehicle_characteristics
 
     def get_distance(self, time):
+        """
+        The function calculates the distance the vehicle will travel in a given time.
+        :param time: Time in hours.
+        :type time: int
+        :return:
+        :rtype: str|None
+        """
         if isinstance(time, int):
             distance = time*self.average_speed
             return f'{distance} {self.distance_measurement_units}'
@@ -95,6 +108,12 @@ class Car(Vehicle):
         self.wheel_base = wheel_base
 
     def get_vehicle(self):
+        """
+        Returns an object containing the main characteristics of an object of this class.
+
+        :return:
+        :rtype: object
+        """
         vehicle_characteristics = {
             'driving_force': self.driving_force,
             'average_speed': f'{self.average_speed} {self.speed_measurement_units}',
@@ -162,6 +181,12 @@ class Ship(Vehicle):
         self.buoyancy = buoyancy
 
     def get_vehicle(self):
+        """
+        Returns an object containing the main characteristics of an object of this class.
+
+        :return:
+        :rtype: object
+        """
         vehicle_characteristics = {
             'driving_force': self.driving_force,
             'average_speed': f'{self.average_speed} {self.speed_measurement_units}',
@@ -174,6 +199,13 @@ class Ship(Vehicle):
         return vehicle_characteristics
 
     def get_distance(self, time):
+        """
+        The function calculates the distance the vehicle will travel in a given time.
+        :param time: Time in hours.
+        :type time: int
+        :return:
+        :rtype: str|None
+        """
         if isinstance(time, int):
             distance = time*self.average_speed*1.835
             return f'{distance} {self.distance_measurement_units}'
@@ -227,6 +259,12 @@ class Plane(Vehicle):
         self.max_height = max_height
 
     def get_vehicle(self):
+        """
+        Returns an object containing the main characteristics of an object of this class.
+
+        :return:
+        :rtype: object
+        """
         vehicle_characteristics = {
             'driving_force': self.driving_force,
             'average_speed': f'{self.average_speed} {self.speed_measurement_units}',
