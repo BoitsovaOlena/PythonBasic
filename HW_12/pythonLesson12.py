@@ -122,20 +122,6 @@ class Triangle:
         self.vertex2 = vertex2
         self.vertex3 = vertex3
 
-    @staticmethod
-    def side_length(point_1, point_2):
-        """
-        The function accepts 2 points, and based on their coordinates,
-        calculates the length of the segment between them.
-        :param point_1:
-        :type point_1: Point
-        :param point_2:
-        :type point_2: Point
-        :return: The length of the side.
-        :rtype: int|float
-        """
-        return ((point_1.x - point_2.x) ** 2 + (point_1.y - point_2.y) ** 2) ** 0.5
-
     @property
     def area(self):
         """
@@ -144,11 +130,40 @@ class Triangle:
         :return:
         :rtype: int|float
         """
-        side1 = self.side_length(self.vertex1, self.vertex2)
-        side2 = self.side_length(self.vertex2, self.vertex3)
-        side3 = self.side_length(self.vertex3, self.vertex1)
+        side1 = Line(self.vertex1, self.vertex2).length
+        side2 = Line(self.vertex2, self.vertex3).length
+        side3 = Line(self.vertex3, self.vertex1).length
         semi_perimeter = (side1 + side2 + side3) / 2
         return (semi_perimeter * (semi_perimeter - side1) * (semi_perimeter - side2) * (semi_perimeter - side3)) ** 0.5
+
+    # Альтернативний варіант якщо у нас немає классу Line
+    # @staticmethod
+    # def side_length(point_1, point_2):
+    #     """
+    #     The function accepts 2 points, and based on their coordinates,
+    #     calculates the length of the segment between them.
+    #     :param point_1:
+    #     :type point_1: Point
+    #     :param point_2:
+    #     :type point_2: Point
+    #     :return: The length of the side.
+    #     :rtype: int|float
+    #     """
+    #     return ((point_1.x - point_2.x) ** 2 + (point_1.y - point_2.y) ** 2) ** 0.5
+    #
+    # @property
+    # def area(self):
+    #     """
+    #     The function calculates the area of a triangle using the coordinates of its vertices.
+    #     Heron's formula is used.
+    #     :return:
+    #     :rtype: int|float
+    #     """
+    #     side1 = self.side_length(self.vertex1, self.vertex2)
+    #     side2 = self.side_length(self.vertex2, self.vertex3)
+    #     side3 = self.side_length(self.vertex3, self.vertex1)
+    #     semi_perimeter = (side1 + side2 + side3) / 2
+    #     return (semi_perimeter * (semi_perimeter - side1) * (semi_perimeter - side2) * (semi_perimeter - side3)) ** 0.5
 
 
 triangle = Triangle(point1, point2, point3)
