@@ -62,13 +62,14 @@ Additional:
 '''
 
 # from pprint import pprint
-from library import Currency
-from library import commands_to_dict
-from currencies import currencies
+
+from library import currency_transactions
 
 messages = {
     'input_msg': '\033[0;34mCOMMAND?\n(Don\'t know what to do? Enter command: HELP)\n>>> \033[0m',
-    'error_command': '\033[0;31mIncorrect command format.\nEnter HELP to learn more\033[0m',
+    'error_command': '\033[0;31mIncorrect command.\nThe program contains commands: HELP, STOP, COURSE, EXCHANGE.\n'
+                     'Enter HELP to learn more\033[0m',
+    'error_command_form': '\033[0;31mIncorrect command format.\nEnter HELP to learn more\033[0m',
     'error_currency': '\033[0;31mInvalid currency {}\033[0m',
     'course_msg': 'RATE {rate} {rate_to_currency} AVAILABLE {balance} {currency}',
     'exchange_msg': '{currency} {c_sum}, RATE {rate}',
@@ -95,70 +96,4 @@ messages = {
     'stop': 'SERVICE STOPPED'
 }
 
-for key, val in currencies.items():
-    locals()[f'{key}'] = Currency(key, val['balance'], val['exchange_rate'])
-# pprint(USD.currency_dict)
-# pprint(UAH.currency_dict)
-
-while True:
-    command_string = input(messages['input_msg']).strip(' ').upper()
-    command_dict = commands_to_dict(command_string)
-    if command_dict is None:
-        print(messages['error_command'])
-    elif command_dict['command'] == 'COURSE':
-        item = locals().get(f'{command_dict["currency"]}')
-        if item:
-            rate = item.get_rate(command_dict["rate_to"])
-            if rate:
-                print(messages['course_msg'].format(
-                    rate=rate,
-                    rate_to_currency=command_dict["rate_to"],
-                    balance=item.balance,
-                    currency=item.name
-                ))
-            else:
-                print(messages['error_currency_exchange'].format(command_dict["rate_to"]))
-        else:
-            print(messages['error_currency'].format(command_dict["currency"]))
-    elif command_dict['command'] == 'EXCHANGE':
-        item = locals().get(f'{command_dict["currency"]}')
-        rate_to_item = locals().get(f'{command_dict["rate_to"]}')
-        if not item:
-            print(messages['error_currency'].format(command_dict["currency"]))
-        elif not rate_to_item:
-            print(messages['error_currency'].format(command_dict["rate_to"]))
-        else:
-            exchange_amount = int(command_dict["exchange_val"])
-            amount_after_exchange = item.exchange(rate_to_item, exchange_amount)
-            available_amount = rate_to_item.balance
-            if amount_after_exchange is None:
-                print(messages['error_currency_exchange'].format(rate_to_item.name))
-            elif available_amount >= amount_after_exchange:
-                print(messages['exchange_msg'].format(
-                    currency=rate_to_item.name,
-                    c_sum=amount_after_exchange,
-                    rate=item.get_rate(rate_to_item.name)
-                ))
-                item.balance += exchange_amount
-                rate_to_item.balance -= amount_after_exchange
-                # print('UAH', UAH.currency_dict)
-                # print('USD', USD.currency_dict)
-            else:
-                print(messages['error_exchange'].format(
-                    currency=rate_to_item.name,
-                    c_sum=amount_after_exchange,
-                    available_amount=available_amount
-                ))
-    elif command_dict['command'] == 'HELP':
-        if command_dict['command_to_help'] is None:
-            print(messages['help'])
-        elif command_dict['command_to_help'] == 'EXCHANGE':
-            print(messages['help_exchange'])
-        elif command_dict['command_to_help'] == 'STOP':
-            print(messages['help_stop'])
-        elif command_dict['command_to_help'] == 'COURSE':
-            print(messages['help_course'])
-
-    elif command_dict['command'] == 'STOP':
-        print(messages['stop'])
-        break
+currency_transactions(messages)
