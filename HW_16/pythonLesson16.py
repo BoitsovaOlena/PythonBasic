@@ -37,21 +37,21 @@ def check_request(url, content_type):
         return None
 
 
-def get_str(my_dict, date):
+def get_str(my_list, date):
     """
-    Accepts a dictionary with a list of currencies and the request date.
+    Accepts a list with info of currencies and the request date.
     Forms a string with the given information in the required form.
-    :param my_dict:
-    :type my_dict: dict
+    :param my_list:
+    :type my_list: list
     :param date:
     :type date: datetime.datetime
     :return:
     :rtype: str
     """
-    dict_stringify = ''
-    for i in range(len(my_dict)):
-        dict_stringify += f'\n{i+1}. {my_dict[i]["cc"]} to UAH: {my_dict[i]["rate"]}'
-    return str(date.date()) + dict_stringify
+    list_stringify = ''
+    for i in range(len(my_list)):
+        list_stringify += f'\n{i+1}. {my_list[i]["cc"]} to UAH: {my_list[i]["rate"]}'
+    return str(date.date()) + list_stringify
 
 
 if __name__ == '__main__':
@@ -63,6 +63,5 @@ if __name__ == '__main__':
         if len(response_json) == 1 and response_json[0].get('message'):
             raise ValueError('Wrong parameters format in request')
         my_str = get_str(response_json, my_date)
-        # print(my_str)
         with open('list.txt', 'w') as file:
             file.write(my_str)
